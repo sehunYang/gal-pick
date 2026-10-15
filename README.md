@@ -10,6 +10,43 @@
 
 gal-pick은 여기서 착안했습니다. 구글 검색에서 벗어나, 디시인사이드에서 인정받은 물건을 쉽게 검색해 찾을 수 있게 해 주는 스킬입니다.
 
+## 설치
+
+설치하면 Aside의 모든 작업에서 `/gal-pick`을 쓸 수 있습니다. 아래 세 방법 중 하나만 하면 됩니다.
+
+### 방법 1. Aside에게 부탁하기 (가장 쉬움)
+
+Aside 채팅창에 아래 문장을 그대로 붙여 넣으세요.
+
+```
+https://github.com/sehunYang/gal-pick 의 gal-pick 폴더를 내 Aside 계정 스킬(skills/user/gal-pick)로 설치해줘. SKILL.md의 GP 경로는 설치한 scripts/galpick.js 절대 경로로 바꿔줘.
+```
+
+### 방법 2. 명령 한 줄 (Windows)
+
+PowerShell을 열고 아래 한 줄을 붙여 넣으세요. 파일을 내려받고 `GP` 경로 설정까지 자동으로 합니다.
+
+```powershell
+$ErrorActionPreference='Stop'; $d="$env:USERPROFILE\.aside\u\0\skills\user\gal-pick"; $b="https://raw.githubusercontent.com/sehunYang/gal-pick/main/gal-pick"; New-Item -ItemType Directory -Force "$d\scripts" | Out-Null; Invoke-WebRequest "$b/scripts/galpick.js" -OutFile "$d\scripts\galpick.js" -UseBasicParsing; Invoke-WebRequest "$b/SKILL.md" -OutFile "$d\SKILL.md" -UseBasicParsing; $p=($d -replace '\\','/')+'/scripts/galpick.js'; $t=[IO.File]::ReadAllText("$d\SKILL.md"); [IO.File]::WriteAllText("$d\SKILL.md", [regex]::Replace($t, "'<[^>]+>/scripts/galpick\.js'", "'$p'")); "Installed: $d"
+```
+
+- `Installed: ...`가 보이면 끝입니다. 최신 버전으로 업데이트할 때도 같은 줄을 다시 실행하면 됩니다.
+- Aside에 계정을 여러 개 연결했다면 `u\0`의 숫자를 해당 계정 번호로 바꾸세요.
+
+### 방법 3. 직접 복사
+
+이 저장소의 `gal-pick` 폴더를 Aside 계정 스킬 폴더에 복사합니다.
+
+```
+<Aside 계정 루트>/skills/user/gal-pick/
+├── SKILL.md
+└── scripts/galpick.js
+```
+
+- Windows 예: `C:\Users\<사용자>\.aside\u\0\skills\user\gal-pick`
+- 특정 프로젝트에서만 쓰려면 `<프로젝트>/.agents/skills/gal-pick`에 둡니다.
+- `SKILL.md`의 `GP` 값을 설치한 `scripts/galpick.js`의 절대 경로로 바꾸면 가장 확실합니다.
+
 ## 무엇을 해 주나요
 
 ```
@@ -54,20 +91,6 @@ gal-pick은 여기서 착안했습니다. 구글 검색에서 벗어나, 디시�
 | `run` 출력 크기 | 약 4,300자 (글 1건당 약 200자) |
 | 가격·인용 확정(`finish`) | 후보 4개, 약 10초 |
 | 읽은 글 중 조건과 관련된 글 | 20건 중 19건 (같은 조건, 본문 20건 검증 실행) |
-
-## 설치 (Aside)
-
-`gal-pick` 폴더를 Aside 계정 스킬 폴더에 복사하면 모든 작업에서 쓸 수 있습니다.
-
-```
-<Aside 계정 루트>/skills/user/gal-pick/
-├── SKILL.md
-└── scripts/galpick.js
-```
-
-- Windows 예: `C:\Users\<사용자>\.aside\u\0\skills\user\gal-pick`
-- 특정 프로젝트에서만 쓰려면 `<프로젝트>/.agents/skills/gal-pick`에 둡니다.
-- `SKILL.md`의 `GP` 경로는 설치한 위치의 `scripts/galpick.js` 절대 경로로 바꾸면 가장 확실합니다.
 
 ## 사용법
 
