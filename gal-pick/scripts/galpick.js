@@ -356,6 +356,12 @@
         (await Promise.all(qs.slice(i, i + 3).map(q => G._danawaOne(q, opts.cat).catch(e => ({ q, kind: "error", list: [], e: String(e) })))))
           .forEach(r => dres[r.q] = r);
       }
+      // parallel requests sometimes get an empty page: retry misses one by one
+      for (const q of qs) if (dres[q].kind === "none" || dres[q].kind === "error") {
+        await wait(1200);
+        const r = await G._danawaOne(q, opts.cat).catch(() => null);
+        if (r && r.kind !== "none") dres[q] = r;
+      }
       const gname = gid => (S.gals.find(g => g.gid === gid)?.name || gid).replace(/ⓜ$/, "(마이너)").replace(/ⓝ$/, "(미니)");
       for (const it of items) {
         L.push(`### ${it.name}`);
